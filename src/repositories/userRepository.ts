@@ -58,4 +58,16 @@ export class UserRepository{
       data
     })
   }
+
+  async getPaginated(page: number = 1, perPage: number = 5) {
+    const skip = (page - 1) * perPage;
+    
+    return await prisma.user.findMany({
+      skip,
+      take: perPage,
+      orderBy: {
+        id: 'asc',  
+      },
+    })
+  }
 }

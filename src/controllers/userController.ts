@@ -93,4 +93,33 @@ export class UserController {
       });
     }
   }
+
+  async getPaginated(req: Request, res: Response) {
+    try{
+      const page = parseInt(req.query.page as string) || 1;
+      const perPage = parseInt(req.query.perPage as string) || 5;
+  
+      if (page <= 0) {
+        res.status(400).json({
+          message: "A página precisa ser maior que 0"
+        });
+        return;
+      }
+  
+      if (perPage <= 0) {
+        res.status(400).json({
+          message: "O número de usuários por página precisa ser maior que 0"
+        });
+        return;
+      }
+  
+      const users = await this.userService.getPaginated(page, perPage);
+
+      res.status(200).json(users);
+    } catch (error: any) {
+      res.status(500).json({
+        message: error.message || "Erro do servidor"
+      })
+    }
+  }
 }

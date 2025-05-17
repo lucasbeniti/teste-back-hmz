@@ -54,4 +54,8 @@ export class UserService {
 
     return this.userRepository.update(id, data);
   }
+
+  async getPaginated(page: number, perPage: number) {
+    return this.userRepository.getPaginated(page, perPage);
+  }
 }
