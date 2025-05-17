@@ -18,6 +18,7 @@ export class UserController {
         res.status(404).json({
           message: error.message
         });
+        return;
       }
 
       res.status(500).json({
@@ -37,6 +38,7 @@ export class UserController {
         res.status(409).json({
           message: error.message
         });
+        return;
       }
 
       res.status(500).json({
@@ -55,6 +57,7 @@ export class UserController {
         res.status(404).json({
           message: error.message
         });
+        return;
       }
 
       res.status(500).json({
