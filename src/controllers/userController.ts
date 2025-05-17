@@ -47,7 +47,7 @@ export class UserController {
     }
   }
 
-  async delete (req: Request, res: Response) {
+  async delete(req: Request, res: Response) {
     try{
       await this.userService.delete(parseInt(req.params.id));
 
@@ -55,6 +55,34 @@ export class UserController {
     } catch (error: any) {
       if (error.message === "Usuário não encontrado") {
         res.status(404).json({
+          message: error.message
+        });
+        return;
+      }
+
+      res.status(500).json({
+        message: error.message || "Erro do servidor"
+      });
+    }
+  }
+
+  async update(req: Request, res: Response) {
+    try {
+      const id = parseInt(req.params.id);
+      const data = req.body;
+      const user = await this.userService.update(id, data);
+
+      res.status(200).json(user);
+    } catch (error: any) {
+      if (error.message === "Usuário não encontrado") {
+        res.status(404).json({
+          message: error.message
+        });
+        return;
+      }
+
+      if (error.message === "Esse e-mail já está sendo utilizado em outro usuário") {
+        res.status(409).json({
           message: error.message
         });
         return;

@@ -40,4 +40,22 @@ export class UserRepository{
       }
     })
   }
+
+  async update(id: number, userData: IUser) {
+    const data: any = {
+      name: userData.name,
+      email: userData.email
+    };
+
+    if (userData.password) {
+      data.password = await bcrypt.hash(userData.password, 10);
+    }
+
+    return prisma.user.update({
+      where: {
+        id
+      },
+      data
+    })
+  }
 }

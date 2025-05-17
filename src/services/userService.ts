@@ -36,4 +36,22 @@ export class UserService {
 
     return this.userRepository.delete(id);
   }
+
+  async update(id: number, data: IUser) {
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new Error("Usuário não encontrado")
+    }
+
+    if (data.email) {
+      const userAlreadyExists = await this.userRepository.findByEmail(data.email);
+      
+      if (userAlreadyExists && userAlreadyExists.id !== id) {
+        throw new Error("Esse e-mail já está sendo utilizado em outro usuário")
+      }
+    }
+
+    return this.userRepository.update(id, data);
+  }
 }
