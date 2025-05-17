@@ -70,4 +70,22 @@ export class UserRepository{
       },
     })
   }
+
+  async validateCredentials(email: string, password: string) {
+    const user = await this.findByEmail(email);
+
+    if (!user) {
+      return null;
+    }
+
+    const passwordMatches = await bcrypt.compare(password, user.password);
+    if (!passwordMatches) {
+      return null;
+    }
+
+    return {
+      id: user.id,
+      email: user.email
+    }
+  }
 }
